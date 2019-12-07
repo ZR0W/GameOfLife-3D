@@ -26,8 +26,8 @@ public class GL3DWindow extends Application {
 	private World3D gameWorld;
 	private Box colorChangingBox = new Box(20, 20, 20);
 	private Box[][][] cellBox;
-	final private PhongMaterial DEAD_CELL_MATERIAL = new PhongMaterial();
-	final private PhongMaterial LIVE_CELL_MATERIAL = new PhongMaterial();
+	private PhongMaterial DEAD_CELL_MATERIAL = new PhongMaterial();
+	private PhongMaterial LIVE_CELL_MATERIAL = new PhongMaterial();
 	
 	
 
@@ -59,7 +59,7 @@ public class GL3DWindow extends Application {
 
         scene.setCamera(camera);
         
-     // longrunning operation runs on different thread
+        //longrunning operation runs on different thread
         Thread thread = new Thread(new Runnable() {
 
             @Override
@@ -88,6 +88,7 @@ public class GL3DWindow extends Application {
             }
 
         });
+        
         // don't let thread prevent JVM shutdown
         thread.setDaemon(true);
         thread.start();
@@ -100,8 +101,8 @@ public class GL3DWindow extends Application {
 		gameWorld = new World3D();
 		gameWorld.randomInitialize(500);
 		//initializing material color for live and dead cell representation
-		DEAD_CELL_MATERIAL.setDiffuseColor(new Color(0.0, 0.7, 0.0, 0.1));
-		DEAD_CELL_MATERIAL.setSpecularColor(new Color(0.0, 0.5, 0.0, 0.1));
+		DEAD_CELL_MATERIAL.setDiffuseColor(new Color(0.0, 0.7, 0.0, 0.0));
+		DEAD_CELL_MATERIAL.setSpecularColor(new Color(0.0, 0.5, 0.0, 0.0));
 		LIVE_CELL_MATERIAL.setDiffuseColor(new Color(0.0, 0.6, 0.7, 0.7));
 		LIVE_CELL_MATERIAL.setSpecularColor(new Color(0.0, 0.4, 0.4, 0.7));
 		//TODO: make if available for the general case, even if the world isn't a cube
@@ -140,9 +141,11 @@ public class GL3DWindow extends Application {
 			for(int y = 0; y < gameWorld.getWorldLength(); y++) {
 				for(int z = 0; z < gameWorld.getWorldHeight(); z++) {
 					if(gameWorld.isAlive(x, y, z)) {
+//						world.getChildren().add(cellBox[x][y][z]);
 						cellBox[x][y][z].setMaterial(LIVE_CELL_MATERIAL);
 					}else {
 						cellBox[x][y][z].setMaterial(DEAD_CELL_MATERIAL);
+//						world.getChildren().remove(cellBox[x][y][z]);
 					}
 				}
 			}
